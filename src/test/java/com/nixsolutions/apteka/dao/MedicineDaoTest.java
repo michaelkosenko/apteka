@@ -19,8 +19,8 @@ import lombok.SneakyThrows;
 
 public class MedicineDaoTest extends DataSourceBasedDBTestCase {
     private JdbcDataSource ds;
-    
-    private MedicineDao dao = new MedicineDao(getDataSource());
+
+    private MedicineDao dao = new JdbcMedicineDao(getDataSource());
 
     public void testFindById() {
         Medicine medicine = dao.findById(Long.valueOf(1L));
@@ -28,7 +28,7 @@ public class MedicineDaoTest extends DataSourceBasedDBTestCase {
         assertEquals(Long.valueOf(1L), medicine.getId());
         assertEquals("SKU001", medicine.getSku());
     }
-    
+
     public void testFindByIdNull() {
         Medicine medicine = dao.findById(Long.valueOf(2L));
         assertNull(medicine);
@@ -36,13 +36,13 @@ public class MedicineDaoTest extends DataSourceBasedDBTestCase {
 
     @SneakyThrows
     public void testCreate() {
-        
+
         Medicine medicine = Medicine.builder().sku("SKU002").build();
-        
+
         medicine = dao.create(medicine);
         assertNotNull(medicine);
         assertNotNull(medicine.getId());
-        
+
         assertEquals(2, getConnection().createDataSet().getTable("medicine").getRowCount());
     }
 
@@ -50,7 +50,7 @@ public class MedicineDaoTest extends DataSourceBasedDBTestCase {
     protected DataSource getDataSource() {
         if (ds == null) {
             String file = getClass().getClassLoader().getResource("schema.sql").getFile();
-            
+
             ds = new JdbcDataSource();
             ds.setUrl("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;INIT=RUNSCRIPT FROM '" + file + "'");
             ds.setUser("sa");
