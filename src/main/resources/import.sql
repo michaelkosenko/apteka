@@ -1,0 +1,2 @@
+INSERT INTO Doctor (username, password, fullName) VALUES ('strange', 'b26d424dcb3d41a09d8f50dd5c4c2507ed3b68fd39d4d8afc5a08376459ac079', 'Dr. Strange');
+INSERT INTO Doctor (username, password, fullName) VALUES ('aybolit', '9d6c525eecc7801acbd1112cc4053734c7ccca3852e6c9d550e7f193782434ab', 'Доктор Айболит');

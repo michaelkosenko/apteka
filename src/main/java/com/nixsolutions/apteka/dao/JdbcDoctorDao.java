@@ -18,7 +18,9 @@ public class JdbcDoctorDao extends JdbcGenericDao<Doctor> implements DoctorDao {
 
     private static final String SQL_FIND_BY_ID = "SELECT id, name FROM doctor WHERE id = ?";
 
-    private static final String SQL_CREATE = "INSERT INTO doctor (name) VALUES (?)";
+    private static final String SQL_CREATE = "INSERT INTO doctor (username, password, fullName) VALUES (?, ?, ?)";
+
+    private static final String SQL_UPDARTE = "UPDATE doctor username = ?, password = ?, fullName =? WHERE id = ?";
 
     private static final String SQL_FIND_ALL = "SELECT id, name FROM doctor";
 
@@ -37,14 +39,22 @@ public class JdbcDoctorDao extends JdbcGenericDao<Doctor> implements DoctorDao {
             @SneakyThrows
             public Doctor fromResultSet(ResultSet resultSet) {
                 return Doctor.builder().id(resultSet.getLong("id"))
-                        .name(resultSet.getString("name")).build();
+                        .username(resultSet.getString("username"))
+                        .password(resultSet.getString("password"))
+                        .fullName(resultSet.getString("fullName"))
+                        .build();
             }
 
             @Override
             @SneakyThrows
             public void fillStatement(PreparedStatement statement,
                     Doctor entity) {
-                statement.setString(1, entity.getName());
+                statement.setString(1, entity.getUsername());
+                statement.setString(2, entity.getPassword());
+                statement.setString(3, entity.getFullName());
+                if (entity.getId() != null) {
+                    statement.setLong(4, entity.getId());
+                }
 
             }
         };
@@ -57,8 +67,12 @@ public class JdbcDoctorDao extends JdbcGenericDao<Doctor> implements DoctorDao {
 
     @Override
     public String getFindAllSql() {
-        // TODO Auto-generated method stub
         return SQL_FIND_ALL;
+    }
+
+    @Override
+    public Doctor findByUsername(String username) {
+        throw new UnsupportedOperationException();
     }
 
 }

@@ -4,4 +4,6 @@ import com.nixsolutions.apteka.model.Doctor;
 
 public interface DoctorDao extends Dao<Doctor> {
 
+    Doctor findByUsername(String username);
+
 }

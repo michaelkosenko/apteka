@@ -1,6 +1,7 @@
 package com.nixsolutions.apteka.model;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.hibernate.annotations.NaturalId;
@@ -17,9 +18,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Doctor implements Entity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NaturalId
-    private String name;
+    private String username;
+
+    private String password;
+
+    private String fullName;
+
 }
