@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        https://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <bean id="dataSource" class="org.h2.jdbcx.JdbcDataSource">
+        <property name="url"
+            value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1" />
+        <property name="user" value="sa" />
+        <property name="password" value="" />
+    </bean>
+
+    <bean id="sessionFactory"
+        class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan"
+            value="com.nixsolutions.apteka.model" />
+        <property name="hibernateProperties">
+            <value>
+                hibernate.show_sql=true
+                hibernate.format_sql=true
+                hibernate.hbm2ddl.auto=create
+                hibernate.dialect=org.hibernate.dialect.H2Dialect
+            </value>
+        </property>
+    </bean>
+    <bean id="txManager"
+        class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <!--
+    <tx:annotation-driven
+        transaction-manager="txManager" />
+         -->
+</beans>
